@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Check, ChevronRight, MessageCircle, Anchor, Map, Calendar, Users, Camera, Shield, PlayCircle, X, Instagram, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
 
-const videos = [
-  "https://storage.googleapis.com/aistudio-user-uploads-us-east1/123226778309/2026-02-26T00:37:41.383Z/1.mp4",
-  "https://storage.googleapis.com/aistudio-user-uploads-us-east1/123226778309/2026-02-26T00:37:41.383Z/2.mp4",
-  "https://storage.googleapis.com/aistudio-user-uploads-us-east1/123226778309/2026-02-26T00:37:41.383Z/3.mp4",
-  "https://storage.googleapis.com/aistudio-user-uploads-us-east1/123226778309/2026-02-26T00:37:41.383Z/4.mp4",
-  "https://storage.googleapis.com/aistudio-user-uploads-us-east1/123226778309/2026-02-26T00:37:41.383Z/5.mp4",
-  "https://storage.googleapis.com/aistudio-user-uploads-us-east1/123226778309/2026-02-26T00:37:41.383Z/6.mp4",
-  "https://storage.googleapis.com/aistudio-user-uploads-us-east1/123226778309/2026-02-26T00:37:41.383Z/7.mp4",
-  "https://storage.googleapis.com/aistudio-user-uploads-us-east1/123226778309/2026-02-26T00:37:41.383Z/8.mp4",
-  "https://storage.googleapis.com/aistudio-user-uploads-us-east1/123226778309/2026-02-26T00:37:41.383Z/9.mp4",
+const images = [
+  "https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1544550581-5f7ceaf7f992?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1502680390469-be75c86b636f?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1520116468816-95b69f847357?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1495954484750-af469f2f9be5?q=80&w=800&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1559494007-9f5847c49d94?q=80&w=800&auto=format&fit=crop",
 ];
 
 const plans = [
   {
-    name: "Plano (A)",
+    name: "Plano Corais",
     price: "55",
     description: "Ideal para quem quer começar a viver o mar com a gente.",
     features: [
@@ -38,7 +38,7 @@ const plans = [
     highlight: false
   },
   {
-    name: "Plano (B)",
+    name: "Plano Arquipélago",
     price: "100",
     description: "Para quem quer mais aventuras e descontos exclusivos.",
     features: [
@@ -54,7 +54,7 @@ const plans = [
     highlight: true
   },
   {
-    name: "Plano (S)",
+    name: "Plano Oceano",
     price: "295",
     description: "A experiência completa. Todos os eventos inclusos.",
     features: [
@@ -90,9 +90,9 @@ const faqs = [
   }
 ];
 
-const VideoModal = ({ videoUrl, onClose }: { videoUrl: string, onClose: () => void }) => {
+const ImageModal = ({ imageUrl, onClose }: { imageUrl: string, onClose: () => void }) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/95 p-4 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/95 p-4 backdrop-blur-md" onClick={onClose}>
       <button onClick={onClose} className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors">
         <X size={36} />
       </button>
@@ -100,16 +100,17 @@ const VideoModal = ({ videoUrl, onClose }: { videoUrl: string, onClose: () => vo
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="relative w-full max-w-4xl aspect-[9/16] sm:aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl"
+        className="relative w-full max-w-4xl max-h-[90vh] bg-black rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center"
+        onClick={e => e.stopPropagation()}
       >
-        <video src={videoUrl} controls autoPlay className="w-full h-full object-contain" />
+        <img src={imageUrl} alt="Galeria Rota 55" className="w-full h-full object-contain max-h-[90vh]" />
       </motion.div>
     </div>
   )
 }
 
 export default function LandingPage() {
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [activeImage, setActiveImage] = useState<string | null>(null);
 
   const scrollToPlans = () => {
     document.getElementById('planos')?.scrollIntoView({ behavior: 'smooth' });
@@ -117,25 +118,16 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-blue-200">
-      {activeVideo && <VideoModal videoUrl={activeVideo} onClose={() => setActiveVideo(null)} />}
+      {activeImage && <ImageModal imageUrl={activeImage} onClose={() => setActiveImage(null)} />}
 
       {/* Hero Section */}
       <section className="relative pt-24 pb-32 overflow-hidden bg-slate-950 text-white">
         <div className="absolute inset-0 opacity-40 bg-slate-900">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="none"
-            poster="https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?q=80&w=2070&auto=format&fit=crop"
+          <img
+            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop"
+            alt="Praia Litoral Norte SP"
             className="w-full h-full object-cover"
-            onCanPlay={(e) => {
-              (e.target as HTMLVideoElement).play().catch(() => { });
-            }}
-          >
-            <source src={videos[8]} type="video/mp4" />
-          </video>
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/80 to-slate-950"></div>
         </div>
 
@@ -176,52 +168,33 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Video Marathon Section */}
+      {/* Photo Gallery Section */}
       <section className="py-24 bg-slate-950 text-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4">Sinta a energia do clube</h2>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4">Nossos Cenários</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
-              Nós não temos medalhas ou pódios, vivemos histórias e experiências. Assista aos nossos melhores momentos e prepare-se para viver o mar de uma forma totalmente nova.
+              O Litoral Norte como você nunca viu. Explore as paisagens onde nossas histórias acontecem e prepare-se para viver o mar de uma forma totalmente nova.
             </p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {videos.map((vid, idx) => (
+            {images.map((imgUrl, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="group relative aspect-[9/16] bg-slate-900 rounded-2xl overflow-hidden cursor-pointer"
-                onClick={() => setActiveVideo(vid)}
+                className="group relative aspect-square bg-slate-900 rounded-2xl overflow-hidden cursor-pointer"
+                onClick={() => setActiveImage(imgUrl)}
               >
-                <video
-                  src={vid}
-                  className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  onMouseOver={e => {
-                    const v = e.target as HTMLVideoElement;
-                    const playPromise = v.play();
-                    if (playPromise !== undefined) {
-                      playPromise.catch(() => { });
-                    }
-                  }}
-                  onMouseOut={e => {
-                    const v = e.target as HTMLVideoElement;
-                    v.pause();
-                    v.currentTime = 0;
-                  }}
+                <img
+                  src={imgUrl}
+                  alt={`Cenário Rota 55 ${idx + 1}`}
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
+                  loading="lazy"
                 />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <PlayCircle className="text-white" size={32} />
-                  </div>
-                </div>
               </motion.div>
             ))}
           </div>
